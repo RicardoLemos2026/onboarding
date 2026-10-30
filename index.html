@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{color-scheme:light}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
+</head>
+<body>
+<title>Onboarding Business Connection</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: trilha de módulos à esquerda; em cada módulo, vídeo + capítulos à esquerda e resumo à direita */
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --sunk:#E8ECEF; --fg:#15212B; --muted:#5A6873; --line:#D5DCE1;
+  --accent:#0B6E5F; --accent-ink:#FFFFFF; --accent-soft:#DDF0EC; --mark:#B5651D; --mark-soft:#F7EADD;
+  --display:"Sora",system-ui,sans-serif; --body:"Source Sans 3",system-ui,-apple-system,Segoe UI,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F161C; --surface:#162029; --sunk:#1D2933; --fg:#E6ECF0; --muted:#97A6B1; --line:#2A3743;
+  --accent:#3FB8A3; --accent-ink:#06201B; --accent-soft:#163A35; --mark:#E2A260; --mark-soft:#3A2A1B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F161C; --surface:#162029; --sunk:#1D2933; --fg:#E6ECF0; --muted:#97A6B1; --line:#2A3743;
+  --accent:#3FB8A3; --accent-ink:#06201B; --accent-soft:#163A35; --mark:#E2A260; --mark-soft:#3A2A1B; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+a{color:var(--accent)}
+button,input{font:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* Login */
+#login{min-height:100%;display:grid;place-items:center;padding-block:48px}
+.login-card{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;display:grid;gap:16px}
+.login-card h1{font-size:24px}
+.field{display:grid;gap:6px}
+.field label{font-size:14px;font-weight:600}
+.field input{padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:8px;border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.link-btn{background:none;border:0;color:var(--accent);cursor:pointer;padding:0;font-size:14px;justify-self:start}
+.msg{font-size:14px;min-height:1.2em}
+.msg.err{color:#C0392B}
+.demo-note{font-size:13px;background:var(--mark-soft);color:var(--fg);padding:10px 12px;border-radius:8px}
+
+/* Topo */
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:16px;color:var(--fg);text-decoration:none}
+.brand-mark{width:30px;height:30px;border-radius:8px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:13px;letter-spacing:.02em}
+.brand small{display:block;font-family:var(--body);font-weight:500;font-size:12px;color:var(--muted)}
+.user{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);min-width:0}
+.user span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Grade principal */
+.shell{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;padding-block:28px 64px}
+@media (max-width:860px){.shell{grid-template-columns:minmax(0,1fr)}}
+
+/* Trilha */
+nav.track{display:grid;gap:6px;align-content:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
+@media (max-width:860px){nav.track{position:static}}
+.track-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px 6px}
+.progress{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--sunk);border-radius:4px;overflow:hidden;margin:0 4px 10px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:10px;border-radius:var(--r);color:var(--fg);text-decoration:none;border:1px solid transparent}
+.step:hover{background:var(--surface)}
+.step[aria-current="page"]{background:var(--surface);border-color:var(--line)}
+.dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;background:var(--surface)}
+.step.done .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step b{display:block;font-size:14px;font-weight:600;line-height:1.3}
+.step small{font-size:12px;color:var(--muted)}
+
+/* Boas-vindas */
+.welcome{display:grid;gap:22px}
+.welcome h1{font-size:clamp(28px,4vw,40px);max-width:20ch}
+.lead{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.how{grid-template-columns:minmax(0,1fr)}}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:6px}
+.how strong{font-family:var(--display);font-size:15px}
+.how p{margin:0;font-size:15px;color:var(--muted)}
+.list-intro{display:grid;gap:10px}
+.mod-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);text-decoration:none;color:var(--fg)}
+.mod-row:hover{border-color:var(--accent)}
+.mod-row .meta{font-size:13px;color:var(--muted)}
+
+/* Módulo */
+.module{display:grid;gap:22px}
+.mod-head{display:grid;gap:8px}
+.mod-head h1{font-size:clamp(24px,3.2vw,32px)}
+.facts{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;color:var(--muted)}
+.facts span{white-space:nowrap}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:start}
+@media (max-width:1060px){.cols{grid-template-columns:minmax(0,1fr)}}
+.video-col{display:grid;gap:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
+@media (max-width:1060px){.video-col{position:static}}
+.player{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:linear-gradient(140deg,var(--accent) 0%,#0A3D36 100%);display:grid;place-items:center;text-decoration:none;color:#fff}
+.player .play{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;transition:transform .15s}
+.player:hover .play{transform:scale(1.06)}
+.player .play svg{margin-left:4px}
+.player .cap{position:absolute;left:14px;bottom:12px;right:14px;display:flex;justify-content:space-between;font-size:13px;font-weight:500;gap:8px}
+.player .dur{font-family:var(--mono);background:rgba(0,0,0,.35);padding:2px 8px;border-radius:5px}
+.chapters{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px}
+.chapters h3{font-size:14px;padding:10px 10px 6px}
+.chapters ol{list-style:none;margin:0;padding:0}
+.chapters a{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;padding:8px 10px;border-radius:7px;text-decoration:none;color:var(--fg);font-size:14px;line-height:1.35}
+.chapters a:hover{background:var(--sunk)}
+.ts{font-family:var(--mono);font-size:12px;color:var(--mark);background:var(--mark-soft);border-radius:5px;padding:2px 6px;justify-self:start;font-variant-numeric:tabular-nums}
+.done-toggle{display:flex;align-items:center;gap:10px;font-size:15px;cursor:pointer;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.done-toggle input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* Resumo */
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;display:grid;gap:22px;min-width:0}
+.summary h2{font-size:20px}
+.summary section{display:grid;gap:10px}
+.summary h3{font-size:15px;color:var(--accent)}
+.summary p{margin:0;max-width:68ch}
+.summary ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.summary li{max-width:66ch}
+.tldr{background:var(--accent-soft);border-radius:10px;padding:14px 16px;font-size:16px}
+.must{border-left:3px solid var(--mark);background:var(--mark-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-weight:600;font-size:15px}
+.badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mark);background:var(--mark-soft);border-radius:5px;padding:2px 7px;margin-left:6px;vertical-align:2px}
+.mission{font-family:var(--display);font-size:18px;line-height:1.45;font-weight:500}
+.note{color:var(--muted);font-size:14px}
+.qlist li span{min-width:0}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.people{grid-template-columns:minmax(0,1fr)}}
+.person{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.person b{font-size:15px}
+.person span{font-size:13px;color:var(--muted)}
+.qlist{counter-reset:q;list-style:none;padding:0!important}
+.qlist li{counter-increment:q;display:grid;grid-template-columns:26px minmax(0,1fr);gap:6px}
+.qlist li::before{content:counter(q);font-family:var(--mono);font-size:12px;color:var(--mark);padding-top:3px}
+.todo{border:1.5px dashed var(--mark);border-radius:10px;padding:14px 16px;display:grid;gap:8px;background:var(--mark-soft)}
+.todo h3{color:var(--mark)}
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Administração */
+.btn.small{padding:7px 12px;font-size:14px}
+.btn.danger{background:#B3261E;color:#fff;border-color:#B3261E}
+.shell.wide{grid-template-columns:minmax(0,1fr)}
+.shell.wide nav.track{display:none}
+.admin{display:grid;gap:18px;max-width:900px}
+.lead.small{font-size:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:10px;min-width:0}
+.panel.warn{background:var(--mark-soft);border-color:transparent}
+.panel h3{font-size:15px}
+.hint{font-size:14px;color:var(--muted);margin:0;font-weight:400}
+.hint code,.field code{font-family:var(--mono);font-size:12px;background:var(--sunk);padding:1px 5px;border-radius:4px}
+.add-row{display:flex;gap:10px;flex-wrap:wrap}
+.add-row input{flex:1 1 260px;min-width:0}
+.admin input,.admin textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit}
+.admin textarea{resize:vertical;line-height:1.5}
+.admin textarea.mono{font-family:var(--mono);font-size:13px}
+.msg.err,.err{color:#C0392B}
+.msg.warn-txt{color:var(--mark)}
+.msg.ok-txt{color:var(--accent)}
+.vlist{display:grid;gap:8px}
+.vrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.vmain{display:flex;gap:12px;align-items:flex-start;min-width:0;flex:1 1 320px}
+.vtxt{display:grid;gap:2px;min-width:0}
+.vtxt b{font-size:15px;overflow-wrap:anywhere}
+.vtxt small{font-size:13px;color:var(--muted)}
+.vact{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;border-radius:999px;padding:3px 10px;white-space:nowrap;background:var(--sunk);color:var(--muted)}
+.chip.st-publicado{background:var(--accent-soft);color:var(--accent)}
+.chip.st-rascunho{background:var(--mark-soft);color:var(--mark)}
+.chip.st-erro{background:rgba(192,57,43,.14);color:#C0392B}
+.spin{width:10px;height:10px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.back{font-size:14px;text-decoration:none}
+.checks ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.checks li{padding-left:24px;position:relative;font-size:14px}
+.checks li::before{position:absolute;left:0;top:0;font-weight:700}
+.checks .ck-ok::before{content:"✓";color:var(--accent)}
+.checks .ck-aviso::before{content:"⚠";color:var(--mark)}
+.checks .ck-nota::before{content:"✎";color:var(--muted)}
+.editor{gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid2 .wide{grid-column:1/-1}
+@media (max-width:640px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.actions .spacer{flex:1}
+.preview-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--mark-soft);border-radius:10px;padding:10px 14px;font-size:15px}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+
+<!-- ============================================================
+     1) CONFIGURAÇÃO DO FIREBASE
+     Cole aqui os dados do seu projeto (Firebase Console > Configurações do projeto > Seus apps > Web).
+     Enquanto apiKey estiver "COLE_AQUI", o site abre em MODO DEMONSTRAÇÃO, sem login de verdade.
+     ============================================================ -->
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBQ0iOeI8mq0i2n7Zhw9daBJwgShMCvzsM",
+  authDomain: "onboarding-ad44d.firebaseapp.com",
+  projectId: "onboarding-ad44d",
+  storageBucket: "onboarding-ad44d.firebasestorage.app",
+  messagingSenderId: "331796919696",
+  appId: "1:331796919696:web:73a103f60c0a9e9a0aef15"
+};
+</script>
+
+<!-- ============================================================
+     2) CONTEÚDO FIXO E VÍDEOS INICIAIS
+     Os vídeos novos são adicionados pelo painel "Gerenciar vídeos" do portal,
+     e não por aqui. A lista abaixo é a dos 7 primeiros vídeos: o portal a usa
+     enquanto o banco de dados estiver vazio, e o botão "Importar os 7 vídeos
+     iniciais" do painel copia esses vídeos para o banco.
+     ============================================================ -->
+<script>
+const MISSAO = "Resgatar a vida de donos e donas de empresa por meio de gestão, liderança e estruturação empresarial, para que possam crescer, produzir mais lucro, gerar mais empregos e expandir o Reino de Deus na Terra.";
+
+const VALORES = [
+  ["Autorresponsabilidade", "Assumir a sua parte, sem procurar culpados."],
+  ["Atitude de dono", "Agir como se a empresa fosse sua, olhando para o todo."],
+  ["Proatividade como resposta", "Diante de um problema, trazer ação e opções de solução."],
+  ["Humildade para aprender sempre", "Aprender com o que deu errado em vez de se defender."],
+  ["Receber feedback sem mimimi", "Extrair a essência do feedback, mesmo quando ele não é dito."]
+];
+
+const EQUIPE = [
+  ["Ricardo Lemos", "Sócio da Business Connection"],
+  ["Igor Martins", "Coordenador de marketing de todas as áreas"],
+  ["Willian Alves", "Estrategista e vendedor (closer)"],
+  ["Ricardo Farias", "Vendedor interno e sucesso do cliente; acompanha os mentorados e faz vendas de baixo ticket nos eventos"],
+  ["Fúbia Tejada", "Consultora master"],
+  ["Gilmar Sousa", "Tecnologia (TI) e time de consultoria"],
+  ["Gabriela Carvalho", "Consultoria financeira pessoal"],
+  ["Alexandre Lima", "Financeiro: tudo o que envolve dinheiro"],
+  ["Bia (Beatriz Viana)", "Apoio a todo o time; resolve problemas e conhece todos os processos"]
+];
+
+const VIDEOS = [
+  {
+    id: "missao-e-valores",
+    data: "2026-01-26",
+    titulo: "Missão, visão e os três primeiros valores",
+    link: "https://fathom.video/share/YPBs2JC28jxQhCypz7vysmAKRN35NAGW",
+    duracao: "60 min",
+    apresentador: "Ricardo Lemos",
+    tldr: "Primeira reunião da série sobre a identidade da empresa. O Ricardo apresenta a missão, a proposta de valor e a visão da Business Connection e explica os três primeiros valores: autorresponsabilidade, atitude de dono e proatividade como resposta.",
+    capitulos: [
+      [0, "Abertura (conversa informal)"],
+      [703, "A missão da empresa"],
+      [929, "Proposta de valor, visão e os três primeiros valores"],
+      [2535, "Como lidar com quem só cria barreiras"],
+      [3037, "O time comenta o que a missão significa para cada um"],
+      [3578, "Encerramento"]
+    ],
+    secoes: [
+      { titulo: "A missão", itens: [
+        "\"Resgatar a vida de donos e donas de empresa por meio de gestão, liderança e estruturação empresarial, para que possam crescer, produzir mais lucro, gerar mais empregos e expandir o Reino de Deus na Terra.\"",
+        "Resgatar a vida significa ajudar o dono a crescer sem se matar e sem se sobrecarregar. Muitos chegam com a vida perdida e a empresa estagnada.",
+        "Para o Ricardo, a missão é a essência da empresa e dificilmente vai mudar."
+      ]},
+      { titulo: "Proposta de valor (ainda em construção na época)", itens: [
+        "Versão emocional: entregar ao empresário a chave da prisão que ele mesmo criou com a empresa, para que tenha liberdade de prosperar.",
+        "Para o empresário: crescer continuamente uma empresa nos Estados Unidos sem que ela dependa dele.",
+        "Para a empresa: estruturar o negócio para um crescimento sustentável, lucrativo e escalável na América."
+      ]},
+      { titulo: "A visão", itens: [
+        "Criar um ecossistema de empresas no modelo one-stop shop (marketing, estruturação financeira, contratação, educação, consultoria e consultoria financeira) e ser referência em alavancagem de negócios brasileiros nos Estados Unidos.",
+        "Meta: ter US$ 1 bilhão em faturamento de empresas clientes dentro do ecossistema até 2028.",
+        "Na época faltava um parceiro de impostos e contabilidade (taxes), que o Ricardo estava buscando."
+      ], extra: "Missão é o porquê, visão é aonde se quer chegar e valores são o como. Processos e sistemas não cobrem todas as situações; os valores orientam como cada pessoa decide e age quando não há regra." },
+      { titulo: "Os três primeiros valores", itens: [
+        "Autorresponsabilidade: princípio inegociável de assumir a sua parte, sem procurar culpados. O Ricardo usa o relato de Adão e Eva, em que cada um joga a culpa no outro, e indica o livro O Poder da Autorresponsabilidade, de Paulo Vieira.",
+        "Atitude de dono: perguntar sempre \"se a empresa fosse minha, o que eu faria?\". Dono olha para o todo e entende que uma decisão afeta as outras áreas. Isso vale também para gastos, como ferramentas pagas e não usadas.",
+        "Proatividade como resposta: todo problema pede uma ação. Ao levar um problema a alguém, leve também duas ou três opções de solução, ou pelo menos uma ideia de quem consultar."
+      ], extra: "O Ricardo alerta para pessoas que só criam barreiras a cada proposta: elas travam o time, e o líder não deve deixar de agir por receio da reação delas." }
+    ],
+    tarefa: { titulo: "O que fazer depois de assistir", itens: [
+      "Ler o livro O Poder da Autorresponsabilidade, de Paulo Vieira, indicado pelo Ricardo.",
+      "Pensar, como o time fez no final da reunião, no que a missão significa para você.",
+      "A partir de agora, levar junto com cada problema pelo menos uma proposta de solução."
+    ]}
+  },
+  {
+    id: "por-que-a-missao",
+    data: "2026-02-09",
+    titulo: "Por que a missão importa: a empresa gera riqueza",
+    link: "https://fathom.video/share/oAhGfVTJHVE4CSG1fTA8-QP5XN35N6xb",
+    duracao: "77 min",
+    apresentador: "Ricardo Lemos",
+    destaque: "No final desta reunião o Ricardo pediu que toda pessoa que entrar no time assista a esta gravação.",
+    tldr: "O Ricardo explica por que a missão de resgatar donos de empresa importa: é a empresa que transforma material e trabalho em dinheiro novo, gera empregos e faz a economia girar. Depois apresenta um valor que ele considera inegociável, não aceitar desculpas, e responde como lidar com um cliente de mentalidade engessada.",
+    capitulos: [
+      [0, "Abertura (conversa informal)"],
+      [461, "Retomada da missão"],
+      [720, "Exemplo da cadeira: material, trabalho e lucro"],
+      [1155, "Onde nasce o dinheiro novo: o risco do empresário"],
+      [1324, "As empresas como motor da economia"],
+      [2132, "O empresário parado trava a cadeia; doações e o Reino de Deus"],
+      [2355, "Por que não dá para vender tudo a preço de custo"],
+      [3150, "Valor inegociável: não aceitar desculpas"],
+      [3725, "Pergunta do Willian: o cliente de mentalidade engessada"],
+      [3883, "Resposta: perguntas de coaching e não se acomodar"],
+      [4552, "Toda pessoa nova deve assistir a esta reunião"]
+    ],
+    secoes: [
+      { titulo: "O exemplo da cadeira", itens: [
+        "US$ 30 de material (madeira, prego, verniz, tecido) mais US$ 30 de trabalho dão um custo de US$ 60.",
+        "Vendida por US$ 150, a cadeira gera US$ 90 de lucro bruto (gross profit). Desse valor saem overhead, marketing e impostos; o que sobra é o lucro líquido.",
+        "Se a cadeira não for vendida, o dono fica com US$ 60 de prejuízo no estoque."
+      ]},
+      { titulo: "Dinheiro novo e risco", itens: [
+        "Os US$ 90 não existiam antes. Só passam a existir porque o dono investiu primeiro e assumiu o risco de vender depois.",
+        "Na visão do Ricardo, quem gera riqueza nova na economia são as empresas, que contratam pessoas para transformar materiais em produtos e serviços.",
+        "Quando uma empresa cresce, compra mais de outras empresas, que também contratam mais. As pessoas só crescem dentro de uma empresa se a empresa cresce e abre novas posições.",
+        "Nos Estados Unidos a estrutura favorece empresas pequenas: uma construtora que pega um serviço grande subcontrata várias outras empresas."
+      ]},
+      { titulo: "Por que o lucro importa", itens: [
+        "Vender tudo a preço de custo não sustenta investimento. Exemplo da época: a contratação de um analista de dados para atender os clientes, sem cobrar mais por isso; o risco é da empresa e só é possível com lucro.",
+        "Expandir o Reino de Deus, para o Ricardo, é usar o resultado das empresas para abençoar pessoas. Na campanha feita no evento Business Plan, foram arrecadados US$ 935 para missões na África.",
+        "Ele cita o Giving Pledge, compromisso de bilionários de doar a maior parte da fortuna, para mostrar que o dinheiro precisa servir a algo além de si mesmo."
+      ]},
+      { titulo: "Não aceitar desculpas", itens: [
+        "Quando algo não acontece, a pergunta não é por que não deu, e sim o que vamos fazer para dar.",
+        "O valor da empresa está em gerar resultado com os clientes difíceis: o desorganizado, o que não faz follow-up, o que tem vergonha de vender. Para os fáceis, qualquer um entrega.",
+        "Se um cliente esbarra numa limitação, a resposta é estruturar o negócio para funcionar apesar dela, por exemplo contratando alguém para aquela função."
+      ]},
+      { titulo: "O cliente de mentalidade engessada", itens: [
+        "Coaching não diz o que a pessoa deve fazer; faz perguntas poderosas que levam a pessoa a enxergar o que não está vendo, principalmente projetando o futuro.",
+        "Nem sempre dá para mudar a cabeça de alguém. Não se acomodar é perguntar o que você precisa aprender para influenciar melhor, como o Ricardo fez ao voltar a estudar stories para o marketing.",
+        "Colocar a culpa no que está fora é a primeira estratégia do orgulho. Todo problema é uma oportunidade de olhar para o próprio comportamento e para os processos da empresa."
+      ]}
+    ],
+    tarefa: { titulo: "O que fazer depois de assistir", itens: [
+      "Levar essa forma de pensar também para a sua vida pessoal, como o Ricardo pediu.",
+      "Quando um cliente ou uma situação não der resultado, perguntar primeiro o que você pode fazer diferente."
+    ]}
+  },
+  {
+    id: "humildade-e-feedback",
+    data: "2026-03-09",
+    titulo: "Humildade para aprender e feedback sem mimimi",
+    link: "https://fathom.video/share/byBtWvzpbSyUsQcNsgAu1rJyzRbZiJ6n",
+    duracao: "53 min",
+    apresentador: "Ricardo Lemos",
+    tldr: "Continuação dos valores: humildade para aprender sempre e receber feedback sem mimimi. O Ricardo usa casos reais de clientes que cancelaram para mostrar como extrair a essência de um feedback e propõe um exercício em quatro passos. A gravação começa com a explicação já em andamento.",
+    capitulos: [
+      [0, "Um cliente que cancelou: consultoria por projeto"],
+      [1308, "Valores, fit cultural e o exercício do feedback"],
+      [2136, "O Willian compartilha seu exercício"],
+      [2229, "O caso da TS: o escopo que se perdeu"],
+      [2837, "Exemplos de feedback em cada área"],
+      [3163, "Encerramento"]
+    ],
+    secoes: [
+      { titulo: "O cliente que cancelou", itens: [
+        "Um cliente cancelou dizendo que tinha contratado outro sistema. A essência, segundo o Ricardo: a empresa tinha parado de gerar valor para ele.",
+        "Os projetos davam resultado, mas não tinham começo, meio e fim. Ao terminar o que foi combinado, o trabalho continuava sem um novo projeto definido.",
+        "Aprendizado: a consultoria passa a funcionar por projeto, e o acompanhamento seguinte é proposto durante o projeto, não depois que ele acabou.",
+        "Quando o mesmo sinal aparece com dois ou três clientes, deixa de ser coincidência e vira padrão."
+      ]},
+      { titulo: "O caso da TS", itens: [
+        "Na TS, outra empresa do grupo, a equipe organizava o financeiro do cliente. Os clientes pediam demandas extras (estoque e outras tarefas) e a entrega prometida, o financeiro organizado, atrasava.",
+        "Alguns cancelaram depois de seis meses dizendo que não tinham recebido o que contrataram.",
+        "Aprendizado: produto com escopo definido e mudança no modelo de negócio. Hoje a empresa implanta e treina alguém do cliente ou contrata alguém para ele, em vez de executar o trabalho."
+      ]},
+      { titulo: "Como receber feedback", itens: [
+        "Feedback nem sempre é falado. Os resultados do dia a dia são feedback.",
+        "Nem tudo num feedback é verdade. O trabalho é extrair a essência que vai gerar mudança no seu comportamento.",
+        "O perigo é entrar no diálogo interno emocional e criar histórias para se defender.",
+        "Exemplo: um ótimo vendedor promovido a líder sem preparo. Liderar exige outras habilidades, e os sinais (equipe sem confiança, sem resultado) eram o feedback."
+      ]},
+      { titulo: "Exercício do feedback", lista: [
+        "Onde, numa área específica do seu trabalho, você não está tendo o resultado que deveria?",
+        "Qual é a essência desse resultado?",
+        "Como você vem se defendendo dele? Qual a \"historinha\" que você conta para si mesmo?",
+        "Qual aprendizado vai gerar mudança?"
+      ], extra: "Exemplo do próprio Ricardo: clientes cancelando (resultado), a empresa deixou de gerar valor continuamente (essência), \"mas eles tiveram resultado\" (defesa), criar projetos com começo, meio e fim (aprendizado)." },
+      { titulo: "Valores e cultura", itens: [
+        "Nem toda empresa é para todo mundo, e nem todo mundo é para toda empresa.",
+        "A empresa contrata por comportamento: na entrevista final, quase tudo é sobre valores, comportamento e alinhamento com o momento da empresa. O que importa é o fit cultural.",
+        "Agir dentro dos valores torna as relações duradouras. Valores desalinhados geram conflito ou saídas rápidas."
+      ]}
+    ],
+    tarefa: { titulo: "O que fazer depois de assistir", itens: [
+      "Fazer o exercício de quatro passos para uma área do seu trabalho e anotar as respostas.",
+      "Repetir o exercício sempre que perceber um resultado abaixo do esperado, sem esperar que alguém dê o feedback."
+    ]}
+  },
+  {
+    id: "abundancia-e-escassez",
+    data: "2026-09-28",
+    titulo: "Mentalidade de abundância e de escassez",
+    link: "https://fathom.video/share/V2qRjpo9Q_MTZym5EWHYfP4M7XxJWhNz",
+    duracao: "1h36 (treinamento até 1h33)",
+    apresentador: "Ricardo Lemos",
+    tldr: "Treinamento sobre os dois modelos mentais que, segundo o Ricardo, regem praticamente tudo o que fazemos: abundância e escassez. Ele mostra como reconhecer a escassez em si mesmo, de onde ela vem, como ela aparece nas vendas e por que trava o crescimento.",
+    capitulos: [
+      [0, "Abertura"],
+      [149, "Os dois modelos mentais"],
+      [443, "O que define cada um e o exemplo do evento"],
+      [830, "A filosofia do lucro e a pirâmide de Maslow"],
+      [1691, "Ninguém agrada a todos; a doação para as missões"],
+      [2014, "A desconfiança e a parábola dos trabalhadores da vinha"],
+      [2487, "De onde vem o modelo mental; vendedor escasso e abundante"],
+      [3740, "Elogios, crenças, autossabotagem e a história do Ricardo"],
+      [5216, "Como mudar crenças na prática"],
+      [5335, "Consciência e orgulho"],
+      [5605, "Fim do treinamento (agenda da semana)"]
+    ],
+    secoes: [
+      { titulo: "Os dois modelos", itens: [
+        "Escassez: para alguém ganhar, alguém precisa perder; os recursos são limitados; vai faltar para alguém; ou é uma coisa ou é outra.",
+        "Abundância: alguém pode ganhar sem que o outro perca; há recursos; sempre vai ter para todos; é possível ter mais de uma coisa.",
+        "Todo mundo tem os dois, em graus diferentes e em áreas diferentes da vida. É fácil ver no outro e difícil ver em si, por isso o Ricardo pede para não julgar."
+      ]},
+      { titulo: "Sinais de escassez", itens: [
+        "Egoísmo, desconfiança (\"where's the catch?\"), sensação de estar sendo explorado ou injustiçado.",
+        "Precisar sempre de um culpado e não reconhecer as próprias falhas.",
+        "Dificuldade de elogiar e também de receber elogios.",
+        "No dono de empresa: controlar cada minuto das pessoas.",
+        "A parábola dos trabalhadores da vinha (Mateus 20) ilustra a escassez: o incômodo não é com o que cada um recebeu, e sim com o que o outro recebeu."
+      ]},
+      { titulo: "O exemplo do evento e a filosofia do lucro", itens: [
+        "Duas participantes de um evento com cerca de 100 pessoas reclamaram dos 40 minutos sobre missões. O incômodo, para o Ricardo, era ter pago por algo que não queriam ouvir. Ele mandou devolver o dinheiro delas.",
+        "O lucro é meio, não fim. Serve a sonhos pessoais e à segurança da família, mas também a propósito (ensinar e fazer pessoas crescerem), à transferência de renda por meio de impostos, à evolução do mercado e à generosidade.",
+        "Quem ganha dinheiro só para os dois primeiros objetivos, segundo o Ricardo, acaba infeliz. Ele relaciona isso à pirâmide de Maslow, cujo topo é a autorrealização.",
+        "No evento, os participantes doaram US$ 2.200 para uma escola na África e a empresa doou o mesmo valor, somando US$ 4.400."
+      ]},
+      { titulo: "De onde vem o modelo mental", itens: [
+        "Ele se forma de 0 a 12 anos e a origem não é dinheiro, é amor: o que foi comunicado e interpretado pela criança sobre cuidado, carinho e segurança dos pais ou de quem fez esse papel.",
+        "Depois, as crenças sobre dinheiro reforçam o modelo. Cerca de 90% disso está no inconsciente.",
+        "Crenças moldam comportamentos, que determinam ações e resultados. Mudar só o comportamento sem mudar a crença leva à autossabotagem.",
+        "O Ricardo contou que, entre 2012 e 2013, tinha três empresas que iam bem, saiu delas para um novo negócio e, 18 meses depois, estava quebrado. Foi isso que o levou ao estudo do comportamento humano."
+      ]},
+      { titulo: "Escassez e abundância em vendas", itens: [
+        "O vendedor escasso pode ser muito bom, mas faz negócio uma vez só e destrói a reputação da empresa.",
+        "O vendedor abundante perpetua relações porque vende o que é bom para o cliente.",
+        "Regra da empresa: nunca venda algo se você não tem certeza de que vai ser bom para a pessoa."
+      ]},
+      { titulo: "Como mudar", itens: [
+        "Olhar para o próprio histórico e identificar ciclos que se repetem.",
+        "Buscar desenvolvimento humano: coaching, terapia (como a cognitivo-comportamental), livros e cursos. Para o Ricardo, também o relacionamento com Deus.",
+        "O maior obstáculo é o orgulho: o orgulhoso só reconhece depois da queda; o humilde percebe os sinais antes."
+      ]}
+    ],
+    tarefa: { titulo: "Para refletir", itens: [
+      "Em que áreas da sua vida você percebe sinais de escassez?",
+      "Como você reage quando recebe um elogio?",
+      "O Ricardo se colocou à disposição para conversar no privado com quem quiser orientação sobre o tema."
+    ]}
+  },
+  {
+    id: "ambicao-e-ganancia",
+    data: "2026-10-05",
+    titulo: "Ambição e ganância, e a filosofia Zero a Um",
+    link: "https://fathom.video/share/knPpg42FAj22RmfK46Fduyn2egPvaWTt",
+    duracao: "1h44",
+    apresentador: "Ricardo Lemos",
+    tldr: "O Ricardo explica por que fala de mentalidade nas reuniões: para a empresa chegar a um lugar fora da média, as pessoas precisam pensar de forma alinhada. Ele apresenta a filosofia do livro Zero a Um, diferencia ambição de ganância e descreve quatro tipos de empresa.",
+    capitulos: [
+      [0, "Abertura"],
+      [484, "Zero a Um, vida pessoal e trabalho, ambição e ganância"],
+      [2375, "Ambiente de crescimento e tipos de empresa"],
+      [2576, "Ser pequeno no Brasil e nos Estados Unidos"],
+      [3385, "Os quatro tipos de empresa e a abundância"],
+      [5463, "Produzir mais no mesmo tempo: equilíbrio"],
+      [5737, "O time compartilha reflexões"],
+      [5957, "Desequilíbrio temporário e permanente"],
+      [6180, "Encerramento"]
+    ],
+    secoes: [
+      { titulo: "Zero a Um", itens: [
+        "O livro de Peter Thiel defende criar um monopólio de mercado: ser tão bom que os clientes escolhem você naturalmente. Diferente de um monopólio imposto pelo governo.",
+        "Pessoas fazendo bem o básico levam a empresa a um lugar mediano. Esforço fora da média gera resultados fora da média, e esse é o objetivo da empresa."
+      ]},
+      { titulo: "Trabalho e vida pessoal", itens: [
+        "Para o Ricardo, não existe separação: para os sonhos que envolvem dinheiro (escola dos filhos, viagem, casa), o trabalho é o meio de realizar.",
+        "Por isso ele quer trabalhar os sonhos e metas pessoais de cada pessoa do time."
+      ]},
+      { titulo: "Ambição e ganância", itens: [
+        "Os dois querem mais. A diferença está nos meios: o ambicioso respeita seus valores; o ganancioso está disposto a passar por cima deles.",
+        "\"Uma pessoa nunca vai crescer mais do que a sua ambição.\"",
+        "Ganância lícita: trabalhar de domingo a domingo por anos, deixando família e saúde de lado, mesmo sem fazer nada errado, também é passar por cima de valores.",
+        "Muita gente evita a ambição porque a confunde com ganância."
+      ]},
+      { titulo: "Os quatro tipos de empresa", lista: [
+        "A que não quer crescer.",
+        "A que quer crescer sozinha e pagar o mínimo para quem está abaixo.",
+        "A que cresce e deixa as pessoas crescerem, mas exige o sangue de todos (o Ricardo cita a carreira em bancos como exemplo).",
+        "A que cresce com equilíbrio, deixando todos crescerem sem passar por cima dos valores. É o modelo em que o Ricardo acredita."
+      ], extra: "É impossível se sustentar num ambiente de crescimento sem querer crescer: o ambiente vai exigir mais do que a pessoa está disposta a dar. Os quatro tipos refletem os modelos mentais de abundância e escassez da reunião anterior." },
+      { titulo: "Equilíbrio e produtividade", itens: [
+        "A pergunta que todos devem se fazer: como produzir mais no mesmo tempo?",
+        "Para o Ricardo, atividade física e oração o tornam mais produtivo no trabalho.",
+        "Um desequilíbrio temporário, por um sacrifício específico, é aceitável. Quando ele se prolonga, é sinal de que algo precisa ser ajustado.",
+        "Lei da semeadura: quem planta mais colhe mais."
+      ]}
+    ],
+    tarefa: { titulo: "Para refletir", itens: [
+      "Qual é o tamanho da sua ambição hoje?",
+      "Seus sonhos pessoais estão claros o suficiente para puxar seu crescimento aqui dentro?"
+    ]}
+  },
+  {
+    id: "como-crescer",
+    data: "2026-10-19",
+    titulo: "O que é preciso para crescer: os 5 pilares e a inteligência emocional",
+    link: "https://fathom.video/share/CfrL_uHYWSS8fzyYwzy6mV4T_Egx4zyk",
+    duracao: "1h40",
+    apresentador: "Ricardo Lemos",
+    tldr: "O time monta, junto com o Ricardo, a lista do que uma pessoa precisa para crescer em qualquer área da vida. Ele mostra que a maior parte depende da inteligência emocional, apresenta os 5 pilares da mudança real usados na mentoria e, no final, a nova marca da comunidade: Profit Makers.",
+    capitulos: [
+      [0, "Abertura"],
+      [465, "Recapitulação: ambição e ganância"],
+      [829, "Dividir a vida em 11 áreas"],
+      [1119, "O que é preciso para crescer em uma área"],
+      [1504, "Por que falhamos: disciplina, crenças e resiliência"],
+      [1856, "Conhecimento"],
+      [1975, "Ambiente e ecossistema"],
+      [2286, "Habilidades emocionais e racionais"],
+      [2703, "A pesquisa de Daniel Goleman"],
+      [3167, "Os 5 pilares da mudança real"],
+      [3521, "O desafio: crescer com equilíbrio em todas as áreas"],
+      [4151, "Exemplo: crenças sobre dinheiro"],
+      [5019, "De onde vêm as crenças: pai e mãe"],
+      [5455, "Nova marca da comunidade: Profit Makers"],
+      [5680, "Encerramento e agenda"]
+    ],
+    secoes: [
+      { titulo: "O que é preciso para crescer", itens: [
+        "Ambição: o desejo de crescer e evoluir, que vem antes de tudo.",
+        "Dividir a vida em áreas. Na metodologia que o Ricardo usa, são 11, avaliadas de 0 a 10 no Mapa de Autoavaliação. Ter resultado em uma área só não se sustenta no longo prazo.",
+        "A lista que o time montou: análise do estado atual, metas e objetivos, plano de ação, estratégia, foco, motivação, acompanhamento e direção, fé, recursos, dedicação, disciplina e determinação, crenças, resiliência, conhecimento e ambiente."
+      ]},
+      { titulo: "Ambiente e ecossistema", itens: [
+        "As pessoas com quem você convive moldam seus desejos e suas realizações. Conviver com quem já está no nível que você quer aumenta a sua ambição.",
+        "A família de origem não se escolhe, mas dá para dosar a convivência. Amizades e ambientes se escolhem."
+      ]},
+      { titulo: "Emocional e racional", itens: [
+        "Foco, motivação, fé, disciplina, determinação e resiliência são habilidades emocionais, não racionais.",
+        "A pesquisa de Daniel Goleman citada pelo Ricardo atribui cerca de 85% dos resultados à inteligência emocional.",
+        "Com a inteligência artificial, o conhecimento racional fica cada vez mais acessível, e o emocional pesa ainda mais.",
+        "Cuidado ao rotular alguém de \"muito racional\": muitas vezes é só um perfil comportamental analítico."
+      ]},
+      { titulo: "Os 5 pilares da mudança real", lista: [
+        "Conhecimento: a base para decisões mais inteligentes.",
+        "Inteligência emocional: trabalhada nas sessões de coaching.",
+        "Direcionamento: as aulas da mentoria e o acesso ao Ricardo.",
+        "Autodesenvolvimento: também pelo coaching.",
+        "Ecossistema: o ambiente em que a pessoa está inserida."
+      ], extra: "Segundo o Ricardo, quem vive esses cinco pilares cresce de forma inevitável. O desafio de todo ser humano é crescer com equilíbrio em todas as áreas, e não existe uma linha de chegada." },
+      { titulo: "Crenças sobre dinheiro", itens: [
+        "Exemplo: um professor que ganha bem, mas trabalha de domingo a domingo e vive como se fosse pobre. Isso é emocional, não racional: está nas crenças dele.",
+        "As crenças vêm, em grande parte, de pai e mãe. Diante do padrão dos pais, as pessoas tendem a repeti-lo ou a se rebelar contra ele.",
+        "O papel de cada um é mudar as próprias crenças e passar algo diferente para os filhos."
+      ]},
+      { titulo: "Profit Makers", itens: [
+        "O Ricardo apresentou em primeira mão a marca da nova comunidade: Profit Makers. A ideia vem da expressão americana make money: a pessoa não ganha dinheiro, ela faz.",
+        "A identidade visual ainda ia passar por ajustes."
+      ]}
+    ],
+    tarefa: { titulo: "Para refletir", itens: [
+      "Seus pais tinham crenças de abundância ou de escassez? O que você herdou delas?",
+      "Quais itens da lista de crescimento estão mais fracos para você hoje?"
+    ]}
+  },
+  {
+    id: "metas-e-objetivos",
+    data: "2026-10-26",
+    titulo: "Metas e objetivos, plano de ação e PDI",
+    link: "https://fathom.video/share/T4DgaWp-bdri6c5etNiujYP4LyzsFxFw",
+    duracao: "54 min",
+    apresentador: "Ricardo Lemos",
+    tldr: "Na reunião em que uma nova integrante chegou ao time, o Ricardo apresenta todos e aprofunda o que gera resultado. Ele diferencia objetivo de meta, mostra como montar um plano de ação e pede que cada pessoa escreva seus objetivos profissional, financeiro e pessoal para a reunião de feedback.",
+    capitulos: [
+      [0, "Abertura e chegada do time"],
+      [278, "Apresentação da nova integrante"],
+      [351, "Quem é quem no time e como funciona a reunião de segunda"],
+      [649, "Revisão das reuniões anteriores"],
+      [668, "O que gera resultado: inteligência emocional, racional, ambiente e metas"],
+      [1236, "Objetivo é amplo, meta é específica"],
+      [1606, "Exemplo de meta e plano de ação"],
+      [1997, "Por que as pessoas falham: compromisso e o exemplo da academia"],
+      [2138, "Referências, crenças e modelagem"],
+      [2422, "A empresa como meio de realizar objetivos (PDI)"],
+      [2934, "Você trabalha para você mesmo"],
+      [3098, "Servir os clientes com excelência"],
+      [3168, "Próximos passos"]
+    ],
+    secoes: [
+      { titulo: "O que gera resultado", itens: [
+        "Inteligência emocional: cerca de 85% dos resultados de uma pessoa, segundo a pesquisa de Daniel Goleman citada pelo Ricardo. Inclui foco, motivação, fé, dedicação, disciplina e determinação.",
+        "Inteligência racional (conhecimento técnico): os outros 15%.",
+        "Ambiente: o lugar em que você está inserido e o quanto ele influencia seus resultados.",
+        "Metas e objetivos claros: é daqui que praticamente tudo deriva."
+      ], extra: "A inteligência emocional tem dois lados: a pessoal (como você lida consigo para tirar o melhor de si) e a relacional (como você lida com as pessoas; liderança, trabalho em equipe e influência estão aqui)." },
+      { titulo: "Objetivo e meta", itens: [
+        "Objetivo é amplo: o lugar maior aonde você quer chegar. Exemplo do Ricardo: ser referência no mercado americano em mentoria e consultoria.",
+        "Meta é específica: mensurável, com prazo e escrita de forma positiva. Responde à pergunta \"o que preciso alcançar para chegar ao objetivo?\". O Ricardo vai apresentar depois os 7 requisitos de uma meta.",
+        "Exemplo de meta da empresa: ativos de clientes administrados. No ano anterior os clientes geraram US$ 130 milhões; a visão é chegar a US$ 1 bilhão em 2028.",
+        "\"Não ficar devendo nada\" não é uma boa meta, porque é negativa. Transforme em quanto precisa ganhar e quais dívidas precisa pagar."
+      ]},
+      { titulo: "Plano de ação: perguntas para responder", lista: [
+        "Quem eu preciso me tornar?",
+        "Que habilidades eu não tenho e preciso desenvolver?",
+        "Que habilidades eu já tenho, mas preciso melhorar?",
+        "Que comportamentos preciso eliminar?",
+        "Que conhecimento preciso adquirir?",
+        "Em que ambientes preciso me inserir? De quais preciso me afastar?",
+        "Que crenças fortalecedoras preciso desenvolver? (aqui entram as referências: pessoas cuja mentalidade você quer modelar)"
+      ], extra: "Pagar a academia é ação, não meta. Muita gente para no checklist (\"me matriculei\") e não volta, porque falta constância, disciplina e motivação, que vêm da inteligência emocional." },
+      { titulo: "A empresa como meio", itens: [
+        "A empresa é um meio para cada pessoa realizar seus objetivos. Se os objetivos estão claros e alinhados, todos ganham.",
+        "Cada pessoa terá um PDI (Plano de Desenvolvimento Individual): as habilidades e o caminho para chegar onde quer dentro da empresa.",
+        "Ter um objetivo profissional fora da empresa no longo prazo não é problema: \"até lá você me ajuda, até lá eu te ajudo\".",
+        "Todos trabalham para si mesmos, para seus sonhos e objetivos, contribuindo com a empresa na posição em que estão.",
+        "O que diferencia a Business Connection no mercado é servir os clientes sem medir esforços."
+      ]}
+    ],
+    tarefa: { titulo: "O que fazer depois de assistir", itens: [
+      "Com papel e caneta, escreva seu objetivo profissional, financeiro e pessoal.",
+      "Para cada objetivo, escreva uma meta específica e as respostas do plano de ação.",
+      "Leve o objetivo e a meta profissional e financeira para a sua reunião de feedback individual com o Ricardo. O pessoal fica com você.",
+      "Agende com o Igor e o Willian a apresentação do ecossistema e dos produtos da empresa."
+    ]}
+  }
+];
+
+</script>
+
+<div id="login" hidden>
+  <form class="login-card" id="loginForm" novalidate>
+    <div class="brand"><div class="brand-mark">BC</div><div>Business Connection<small>Portal de onboarding</small></div></div>
+    <h1>Entrar</h1>
+    <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required></div>
+    <button class="btn" type="submit" id="entrar">Entrar</button>
+    <button class="link-btn" type="button" id="esqueci">Esqueci minha senha</button>
+    <div class="msg" id="loginMsg" role="status"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="top"><div class="wrap">
+    <a class="brand" href="#inicio"><div class="brand-mark">BC</div><div>Business Connection<small>Onboarding do time</small></div></a>
+    <div class="user">
+      <a class="btn ghost small" id="lnkAdmin" href="#admin" hidden>Gerenciar vídeos</a>
+      <span id="userEmail"></span>
+      <button class="btn ghost small" id="sair" type="button">Sair</button>
+    </div>
+  </div></header>
+  <div class="wrap shell" id="shell">
+    <nav class="track" aria-label="Trilha de onboarding">
+      <div class="track-head"><span class="eyebrow">Sua trilha</span><span class="progress" id="progTxt"></span></div>
+      <div class="bar"><i id="progBar"></i></div>
+      <div id="steps"></div>
+    </nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DEMO = !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === "COLE_AQUI";
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  const fmtData = d => { if(!d) return ""; const [y,m,dd]=d.split("-"); return dd+"/"+m+"/"+y; };
+  const fmtTs = s => { const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=String(s%60).padStart(2,"0"); return h? h+":"+String(m).padStart(2,"0")+":"+x : m+":"+x; };
+  const linkOk = l => /^https:\/\/fathom\.video\//.test(l||"");
+  const tsLink = (v,s) => linkOk(v.link) ? v.link + (s>0 ? (v.link.includes("?")?"&":"?")+"timestamp="+s : "") : "#";
+  const tokenDoLink = l => { const m=String(l||"").match(/fathom\.video\/share\/(?:[a-z]\/)?([A-Za-z0-9_-]{10,})/); return m?m[1]:null; };
+
+  function norm(v, id){
+    return {
+      id: id || v.id, status: v.status || "publicado", data: v.data || "", titulo: v.titulo || "",
+      link: v.link || "", linkInformado: v.linkInformado || "", duracao: v.duracao || "", apresentador: v.apresentador || "Ricardo Lemos",
+      tldr: v.tldr || "", destaque: v.destaque || "",
+      capitulos: (v.capitulos||[]).map(c => Array.isArray(c) ? {s:c[0], t:c[1]} : {s:c.s, t:c.t}),
+      secoes: (v.secoes||[]).map(s => ({titulo:s.titulo||"", itens:s.itens||[], lista:s.lista||[], extra:s.extra||"", pessoas:s.pessoas||null, nota:s.nota||""})),
+      tarefa: v.tarefa ? {titulo:v.tarefa.titulo||"", itens:v.tarefa.itens||[]} : null,
+      marcadores: v.marcadores || null, verificacao: v.verificacao || [], erro: v.erro || "", etapa: v.etapa || ""
+    };
+  }
+  const BASE = VIDEOS.map(v => norm(v));
+
+  const S = { user:null, email:"", isAdmin:false, docs:[], carregado:false, done:[], rascunhos:{}, db:null, fv:null };
+
+  // ---------- camada de dados ----------
+  const api = DEMO ? (function(){
+    let mem = BASE.map(v => JSON.parse(JSON.stringify(v))), ouvinte = null, n = 0;
+    const avisar = () => ouvinte && ouvinte(mem.map(v=>({...v})));
+    return {
+      ouvir(cb){ ouvinte = cb; avisar(); },
+      async adicionar(obj){ const id = "demo"+(++n); mem.push(norm({...obj}, id)); avisar();
+        setTimeout(()=>{ const v=mem.find(x=>x.id===id); if(v){ v.status="erro"; v.erro="Modo demonstração: o processamento automático só roda no site publicado, com o servidor instalado."; avisar(); } }, 1500);
+        return id; },
+      async salvar(id, patch){ const v=mem.find(x=>x.id===id); if(v) Object.assign(v, patch); avisar(); },
+      async excluir(id){ mem = mem.filter(x=>x.id!==id); avisar(); },
+      async importarBase(){},
+      async carregarProgresso(){ try{ return JSON.parse(localStorage.getItem("onb_done_demo")||"[]"); }catch(e){ return []; } },
+      async salvarProgresso(lista){ try{ localStorage.setItem("onb_done_demo", JSON.stringify(lista)); }catch(e){} }
+    };
+  })() : {
+    ouvir(cb){
+      const col = S.db.collection("videos");
+      if (S.isAdmin) col.onSnapshot(snap => cb(snap.docs.map(d=>norm(d.data(), d.id))), e => cb([], e));
+      else col.where("status","==","publicado").get().then(snap => cb(snap.docs.map(d=>norm(d.data(), d.id))), e => cb([], e));
+    },
+    async adicionar(obj){ const ref = await S.db.collection("videos").add({...obj, criadoEm:S.fv.serverTimestamp(), criadoPor:S.email}); return ref.id; },
+    async salvar(id, patch){ await S.db.collection("videos").doc(id).set({...patch, atualizadoEm:S.fv.serverTimestamp(), atualizadoPor:S.email}, {merge:true}); },
+    async excluir(id){ await S.db.collection("videos").doc(id).delete(); },
+    async importarBase(){
+      const lote = S.db.batch();
+      BASE.forEach(v => { const {id, marcadores, verificacao, erro, etapa, ...dados} = v;
+        dados.secoes = dados.secoes.map(s => { const o={titulo:s.titulo, itens:s.itens, lista:s.lista, extra:s.extra}; return o; });
+        lote.set(S.db.collection("videos").doc(id), {...dados, tokenFathom: tokenDoLink(v.link), importadoEm:S.fv.serverTimestamp(), criadoPor:S.email}); });
+      await lote.commit();
+    },
+    async carregarProgresso(){ try{ const d = await S.db.collection("progresso").doc(S.user.uid).get(); return (d.exists && d.data().assistidos) || []; }catch(e){ return []; } },
+    async salvarProgresso(lista){ try{ await S.db.collection("progresso").doc(S.user.uid).set({assistidos:lista, email:S.email, atualizadoEm:S.fv.serverTimestamp()}); }catch(e){} }
+  };
+
+  function trilha(){
+    const pub = S.docs.filter(v => v.status === "publicado");
+    return (pub.length ? pub : BASE).slice().sort((a,b)=> a.data.localeCompare(b.data));
+  }
+  const acharVideo = id => S.docs.find(v=>v.id===id) || BASE.find(v=>v.id===id);
+
+  // ---------- trilha ----------
+  function renderSteps(current){
+    const vids = trilha(), done = S.done;
+    $("steps").innerHTML =
+      `<a class="step" href="#inicio" ${current==="inicio"?'aria-current="page"':""}><div class="dot">★</div><div><b>Boas-vindas</b><small>Comece por aqui</small></div></a>` +
+      vids.map((v,i)=>`<a class="step ${done.includes(v.id)?"done":""}" href="#${esc(v.id)}" ${current===v.id?'aria-current="page"':""}>
+        <div class="dot">${done.includes(v.id)?"✓":i+1}</div><div><b>${esc(v.titulo)}</b><small>${fmtData(v.data)} · ${esc(v.duracao)}${v.destaque?" · obrigatório":""}</small></div></a>`).join("");
+    const n = vids.filter(v=>done.includes(v.id)).length;
+    $("progTxt").textContent = n+" de "+vids.length+" assistidos";
+    $("progBar").style.width = (vids.length? n/vids.length*100 : 0)+"%";
+  }
+
+  function renderWelcome(){
+    const vids = trilha();
+    $("main").innerHTML = `<div class="welcome">
+      <span class="eyebrow">Onboarding</span>
+      <h1>Bem-vindo(a) ao time da Business Connection</h1>
+      <p class="lead">Aqui estão as gravações das reuniões gerais de segunda-feira em que o Ricardo explica como a empresa pensa e trabalha. Assista na ordem: cada módulo traz o link do vídeo, os capítulos para pular direto ao assunto e um resumo do que foi falado.</p>
+      <div class="how">
+        <div><strong>1. Assista</strong><p>O botão do vídeo abre a gravação no Fathom. Os capítulos levam ao minuto exato.</p></div>
+        <div><strong>2. Leia o resumo</strong><p>Ao lado do vídeo ficam os pontos principais, para revisar depois sem assistir de novo.</p></div>
+        <div><strong>3. Reflita e anote</strong><p>Cada módulo termina com o que fazer depois. Marque como assistido para acompanhar seu progresso.</p></div>
+      </div>
+      <div class="summary">
+        <section><h3>Nossa missão</h3><p class="mission">${esc(MISSAO)}</p></section>
+        <section><h3>Nossos valores principais</h3><ol class="qlist">${VALORES.map(x=>`<li><span><b>${esc(x[0])}.</b> ${esc(x[1])}</span></li>`).join("")}</ol></section>
+        <section><h3>As reuniões de segunda</h3><ul>
+          <li>Toda segunda-feira às 9h30 da manhã o time inteiro da Business Connection se reúne. Se não houver reunião, a Bia avisa.</li>
+          <li>É uma reunião de alinhamento, ensino, propósito, visão, missão e valores. Ao longo da segunda há outras reuniões específicas.</li>
+        </ul></section>
+        <section><h3>Quem é quem</h3><div class="people">${EQUIPE.map(p=>`<div class="person"><b>${esc(p[0])}</b><span>${esc(p[1])}</span></div>`).join("")}</div>
+          <p class="note">Conforme apresentado pelo Ricardo em 26/10/2026. Além deste time há o time da outra empresa do grupo e a GAP, agência de marketing.</p></section>
+      </div>
+      <div class="list-intro"><span class="eyebrow">Módulos</span>
+        ${vids.map((v,i)=>`<a class="mod-row" href="#${esc(v.id)}"><span><b>${i+1}. ${esc(v.titulo)}</b>${v.destaque?' <span class="badge">Obrigatório</span>':""}</span><span class="meta">${fmtData(v.data)} · ${esc(v.duracao)}</span></a>`).join("")}
+      </div>
+      <div><a class="btn" href="#${vids[0]?esc(vids[0].id):"inicio"}">Começar o primeiro módulo</a></div>
+    </div>`;
+  }
+
+  function htmlSecao(s){
+    let h = `<section><h3>${esc(s.titulo)}</h3>`;
+    if (s.pessoas) h += `<div class="people">${s.pessoas.map(p=>`<div class="person"><b>${esc(p[0])}</b><span>${esc(p[1])}</span></div>`).join("")}</div>`;
+    if (s.itens && s.itens.length) h += `<ul>${s.itens.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`;
+    if (s.lista && s.lista.length) h += `<ol class="qlist">${s.lista.map(t=>`<li><span>${esc(t)}</span></li>`).join("")}</ol>`;
+    if (s.extra) h += `<p>${esc(s.extra)}</p>`;
+    if (s.nota) h += `<p class="note">${esc(s.nota)}</p>`;
+    return h + `</section>`;
+  }
+
+  function renderVideo(v, previa){
+    const vids = trilha(), i = vids.findIndex(x=>x.id===v.id), done = S.done.includes(v.id);
+    const prev = i>0 ? vids[i-1] : null, next = i>=0 ? vids[i+1] : null;
+    $("main").innerHTML = `<article class="module">
+      ${previa?`<div class="preview-bar"><span>Pré-visualização. Assim o módulo vai aparecer para o time.</span><a class="btn small" href="#editar-${esc(v.id)}">Voltar para a edição</a></div>`:""}
+      <div class="mod-head"><span class="eyebrow">${i>=0?`Módulo ${i+1} de ${vids.length}`:"Módulo"}</span><h1>${esc(v.titulo)}</h1>
+        <div class="facts"><span>${fmtData(v.data)}</span><span>${esc(v.duracao)}</span><span>Com ${esc(v.apresentador)}</span></div></div>
+      <div class="cols">
+        <div class="video-col">
+          <a class="player" href="${esc(tsLink(v,0))}" target="_blank" rel="noopener">
+            <div class="play"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="#0B6E5F"/></svg></div>
+            <div class="cap"><span>Assistir no Fathom</span><span class="dur">${esc(v.duracao)}</span></div>
+          </a>
+          <div class="chapters"><h3>Capítulos</h3><ol>
+            ${v.capitulos.map(c=>`<li><a href="${esc(tsLink(v,c.s))}" target="_blank" rel="noopener"><span class="ts">${fmtTs(c.s)}</span><span>${esc(c.t)}</span></a></li>`).join("")}
+          </ol></div>
+          ${previa?"":`<label class="done-toggle"><input type="checkbox" id="chk-${esc(v.id)}" ${done?"checked":""}> Já assisti este módulo</label>`}
+        </div>
+        <div class="summary">
+          <h2>Resumo</h2>
+          ${v.destaque?`<div class="must">${esc(v.destaque)}</div>`:""}
+          <div class="tldr">${esc(v.tldr)}</div>
+          ${v.secoes.map(htmlSecao).join("")}
+          ${v.tarefa && v.tarefa.itens.length?`<div class="todo"><h3>${esc(v.tarefa.titulo)}</h3><ul>${v.tarefa.itens.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>`:""}
+        </div>
+      </div>
+      ${previa?"":`<div class="pager">
+        ${prev?`<a class="btn ghost" href="#${esc(prev.id)}">← ${esc(prev.titulo)}</a>`:`<a class="btn ghost" href="#inicio">← Boas-vindas</a>`}
+        ${next?`<a class="btn" href="#${esc(next.id)}">Próximo: ${esc(next.titulo)} →</a>`:""}
+      </div>`}
+    </article>`;
+    const chk = $("chk-"+v.id);
+    if (chk) chk.addEventListener("change", e=>{
+      S.done = S.done.filter(x=>x!==v.id); if (e.target.checked) S.done.push(v.id);
+      api.salvarProgresso(S.done); renderSteps(v.id);
+    });
+  }
+
+  // ---------- administração ----------
+  const ROTULO = { na_fila:"Na fila", processando:"Processando", rascunho:"Revisar", publicado:"Publicado", oculto:"Oculto", erro:"Erro" };
+  function chip(st){ return `<span class="chip st-${esc(st)}">${st==="processando"||st==="na_fila"?'<i class="spin" aria-hidden="true"></i>':""}${esc(ROTULO[st]||st)}</span>`; }
+
+  function renderAdmin(){
+    const ordem = {processando:0, na_fila:0, erro:1, rascunho:2, publicado:3, oculto:4};
+    const lista = S.docs.slice().sort((a,b)=> (ordem[a.status]-ordem[b.status]) || (b.data||"9").localeCompare(a.data||"9"));
+    const faltamBase = !DEMO && BASE.some(b => !S.docs.find(d=>d.id===b.id));
+    $("main").innerHTML = `<div class="admin">
+      <div class="mod-head"><span class="eyebrow">Administração</span><h1>Gerenciar vídeos</h1>
+        <p class="lead small">Cole o link de compartilhamento da reunião. O sistema lê a transcrição no Fathom, escreve o resumo e os capítulos e confere os minutos e os números. Depois é só revisar e publicar.</p></div>
+      <form class="panel" id="formNovo" novalidate>
+        <label for="novoLink"><b>Link de compartilhamento do Fathom</b></label>
+        <div class="add-row"><input id="novoLink" type="url" placeholder="https://fathom.video/share/..." autocomplete="off"><button class="btn" type="submit">Adicionar e processar</button></div>
+        <p class="hint">No Fathom, abra a gravação e clique em <b>Share</b> e depois em <b>Copy link</b>. O processamento leva de 1 a 3 minutos e você pode fechar esta página enquanto isso.</p>
+        <div class="msg" id="novoMsg" role="status"></div>
+      </form>
+      ${faltamBase?`<div class="panel warn"><b>Os 7 vídeos iniciais ainda não estão no banco de dados.</b><p class="hint">Enquanto isso, o portal mostra a versão que veio no arquivo. Importe uma vez para poder editar, ocultar ou reordenar esses vídeos por aqui.</p><button class="btn ghost" id="btnImportar" type="button">Importar os 7 vídeos iniciais</button><div class="msg" id="importMsg"></div></div>`:""}
+      ${DEMO?`<div class="panel warn"><b>Modo demonstração.</b> <span class="hint">As alterações ficam só nesta tela e o processamento automático não roda. No site publicado, com o Firebase configurado, tudo é salvo e processado de verdade.</span></div>`:""}
+      <div class="vlist">
+        ${lista.length? lista.map(v=>`<div class="vrow">
+          <div class="vmain">${chip(v.status)}<div class="vtxt"><b>${esc(v.titulo || v.linkInformado || "Novo vídeo")}</b>
+            <small>${v.data?fmtData(v.data)+" · ":""}${v.status==="processando"?esc(v.etapa||"Processando")+"…":""}${v.status==="na_fila"?"Aguardando o servidor…":""}${v.status==="erro"?`<span class="err">${esc(v.erro)}</span>`:""}${v.status==="rascunho"?"Pronto para revisão":""}${v.status==="publicado"?"Visível para o time":""}${v.status==="oculto"?"Não aparece para o time":""}</small></div></div>
+          <div class="vact">
+            ${["rascunho","publicado","oculto"].includes(v.status)?`<a class="btn small ${v.status==="rascunho"?"":"ghost"}" href="#editar-${esc(v.id)}">${v.status==="rascunho"?"Revisar":"Editar"}</a>`:""}
+            ${v.status==="erro"?`<button class="btn small" data-retry="${esc(v.id)}" type="button">Tentar de novo</button><button class="btn small ghost" data-del="${esc(v.id)}" type="button">Excluir</button>`:""}
+          </div></div>`).join("") : `<div class="panel"><p class="hint">Nenhum vídeo no banco de dados ainda.</p></div>`}
+      </div>
+    </div>`;
+    $("formNovo").addEventListener("submit", async e=>{
+      e.preventDefault();
+      const link = $("novoLink").value.trim(), msg = $("novoMsg");
+      if (!tokenDoLink(link)) { msg.className="msg err"; msg.textContent="Cole um link de compartilhamento do Fathom, no formato https://fathom.video/share/..."; return; }
+      if (S.docs.some(v => tokenDoLink(v.link||v.linkInformado) === tokenDoLink(link) && v.status!=="erro")) { msg.className="msg err"; msg.textContent="Esse vídeo já está na lista."; return; }
+      msg.className="msg"; msg.textContent="Enviando…";
+      try { await api.adicionar({status:"na_fila", linkInformado:link, apresentador:"Ricardo Lemos"}); $("novoLink").value=""; msg.textContent="Recebido. O vídeo aparece na lista abaixo enquanto é processado."; }
+      catch(err){ msg.className="msg err"; msg.textContent="Não foi possível salvar. Confira se o seu e-mail está na lista de administradores."; }
+    });
+    const bi = $("btnImportar");
+    if (bi) bi.addEventListener("click", async ()=>{ bi.disabled=true; $("importMsg").textContent="Importando…";
+      try{ await api.importarBase(); $("importMsg").textContent="Pronto. Os 7 vídeos foram importados."; }catch(e){ bi.disabled=false; $("importMsg").textContent="Não foi possível importar. Confira as regras de segurança do Firestore."; } });
+    document.querySelectorAll("[data-retry]").forEach(b=>b.addEventListener("click",()=>api.salvar(b.dataset.retry,{status:"na_fila"})));
+    document.querySelectorAll("[data-del]").forEach(b=>confirmar(b, ()=>api.excluir(b.dataset.del)));
+  }
+
+  function confirmar(btn, acao){
+    let armado = false, t;
+    btn.addEventListener("click", ()=>{
+      if (!armado) { armado = true; const txt = btn.textContent; btn.textContent = "Clique de novo para confirmar"; btn.classList.add("danger");
+        t = setTimeout(()=>{ armado=false; btn.textContent=txt; btn.classList.remove("danger"); }, 4000); return; }
+      clearTimeout(t); acao();
+    });
+  }
+
+  // texto <-> estrutura
+  const capsParaTexto = caps => caps.map(c=>fmtTs(c.s)+" "+c.t).join("\n");
+  function textoParaCaps(txt){
+    const out=[], erros=[];
+    txt.split("\n").forEach((l,i)=>{ l=l.trim(); if(!l) return;
+      const m = l.match(/^(?:(\d+):)?(\d{1,2}):(\d{2})\s+(.+)$/);
+      if(!m){ erros.push(`Linha ${i+1}: use o formato 12:34 Título do capítulo.`); return; }
+      out.push({ s:(+(m[1]||0))*3600 + (+m[2])*60 + (+m[3]), t:m[4].trim() }); });
+    out.sort((a,b)=>a.s-b.s);
+    return {out, erros};
+  }
+  function secoesParaTexto(secoes){
+    return secoes.map(s=>{
+      const l=["## "+s.titulo];
+      (s.itens||[]).forEach(x=>l.push("- "+x));
+      (s.lista||[]).forEach((x,i)=>l.push((i+1)+". "+x));
+      if (s.extra) l.push("> "+s.extra);
+      return l.join("\n");
+    }).join("\n\n");
+  }
+  function textoParaSecoes(txt){
+    const secoes=[]; let atual=null;
+    txt.split("\n").forEach(raw=>{ const l=raw.trim(); if(!l) return;
+      if (l.startsWith("## ")) { atual={titulo:l.slice(3).trim(), itens:[], lista:[], extra:""}; secoes.push(atual); return; }
+      if (!atual) { atual={titulo:"Resumo", itens:[], lista:[], extra:""}; secoes.push(atual); }
+      let m;
+      if ((m=l.match(/^[-*•]\s+(.*)$/))) atual.itens.push(m[1]);
+      else if ((m=l.match(/^\d+[.)]\s+(.*)$/))) atual.lista.push(m[1]);
+      else if (l.startsWith(">")) atual.extra = (atual.extra? atual.extra+" ":"") + l.replace(/^>\s*/,"");
+      else atual.itens.push(l);
+    });
+    return secoes;
+  }
+  const linhasParaItens = txt => txt.split("\n").map(l=>l.trim().replace(/^[-*•]\s*/,"")).filter(Boolean);
+
+  function lerFormulario(v){
+    const caps = textoParaCaps($("ed-capitulos").value);
+    return { caps, dados: {
+      titulo:$("ed-titulo").value.trim(), data:$("ed-data").value, duracao:$("ed-duracao").value.trim(),
+      apresentador:$("ed-apresentador").value.trim(), link:$("ed-link").value.trim(),
+      destaque:$("ed-destaque").value.trim(), tldr:$("ed-tldr").value.trim(),
+      capitulos: caps.out, secoes: textoParaSecoes($("ed-conteudo").value),
+      tarefa: { titulo:$("ed-tarefa-titulo").value.trim() || "Para refletir", itens: linhasParaItens($("ed-tarefa").value) }
+    }};
+  }
+
+  function renderEditor(id){
+    const orig = S.docs.find(v=>v.id===id);
+    if (!orig) { $("main").innerHTML = `<div class="panel">Vídeo não encontrado. <a href="#admin">Voltar para a lista</a></div>`; return; }
+    const v = S.rascunhos[id] ? {...orig, ...S.rascunhos[id]} : orig;
+    const marc = orig.marcadores ? new Set(orig.marcadores) : null;
+    const ver = orig.verificacao || [];
+    $("main").innerHTML = `<div class="admin">
+      <a class="back" href="#admin">← Voltar para a lista</a>
+      <div class="mod-head"><span class="eyebrow">${chip(orig.status)}</span><h1>${orig.status==="rascunho"?"Revisar vídeo":"Editar vídeo"}</h1></div>
+      ${ver.length?`<div class="panel checks"><h3>Verificação automática</h3><ul>${ver.map(c=>`<li class="ck-${esc(c.tipo)}">${esc(c.texto)}</li>`).join("")}</ul>
+        <p class="hint">Itens com ⚠ merecem uma olhada. Notas com ✎ são observações de quem escreveu o resumo e não aparecem no portal.</p></div>`:""}
+      <form class="panel editor" id="formEd" novalidate>
+        <div class="grid2">
+          <div class="field wide"><label for="ed-titulo">Título</label><input id="ed-titulo" value="${esc(v.titulo)}"></div>
+          <div class="field"><label for="ed-data">Data da reunião</label><input id="ed-data" type="date" value="${esc(v.data)}"></div>
+          <div class="field"><label for="ed-duracao">Duração</label><input id="ed-duracao" value="${esc(v.duracao)}"></div>
+          <div class="field"><label for="ed-apresentador">Com</label><input id="ed-apresentador" value="${esc(v.apresentador)}"></div>
+          <div class="field wide"><label for="ed-link">Link de compartilhamento</label><input id="ed-link" value="${esc(v.link)}"></div>
+        </div>
+        <div class="field"><label for="ed-tldr">Resumo curto (2 ou 3 frases)</label><textarea id="ed-tldr" rows="3">${esc(v.tldr)}</textarea></div>
+        <div class="field"><label for="ed-destaque">Destaque <span class="hint">(opcional; por exemplo, quando o Ricardo pede que toda pessoa nova assista)</span></label><input id="ed-destaque" value="${esc(v.destaque)}"></div>
+        <div class="field"><label for="ed-capitulos">Capítulos <span class="hint">(um por linha: 12:34 Título)</span></label><textarea id="ed-capitulos" class="mono" rows="8">${esc(capsParaTexto(v.capitulos))}</textarea><div class="msg" id="capMsg"></div></div>
+        <div class="field"><label for="ed-conteudo">Conteúdo do resumo</label>
+          <p class="hint">Use <code>## Título da seção</code>, <code>- item</code> para tópicos, <code>1. item</code> para lista numerada e <code>&gt; texto</code> para uma observação no fim da seção.</p>
+          <textarea id="ed-conteudo" class="mono" rows="18">${esc(secoesParaTexto(v.secoes))}</textarea></div>
+        <div class="grid2">
+          <div class="field wide"><label for="ed-tarefa-titulo">Título do bloco final</label><input id="ed-tarefa-titulo" value="${esc(v.tarefa?v.tarefa.titulo:"Para refletir")}"></div>
+        </div>
+        <div class="field"><label for="ed-tarefa">Itens do bloco final <span class="hint">(um por linha)</span></label><textarea id="ed-tarefa" rows="4">${esc((v.tarefa?v.tarefa.itens:[]).join("\n"))}</textarea></div>
+        <div class="actions">
+          <button class="btn ghost" type="button" id="btnPrevia">Pré-visualizar</button>
+          <button class="btn ghost" type="button" id="btnSalvar">Salvar sem publicar</button>
+          <button class="btn" type="button" id="btnPublicar">${orig.status==="publicado"?"Salvar alterações":"Publicar para o time"}</button>
+          <span class="spacer"></span>
+          ${orig.status==="publicado"?`<button class="btn ghost" type="button" id="btnOcultar">Ocultar do portal</button>`:""}
+          ${(orig.link||orig.linkInformado) && !BASE.find(b=>b.id===id)?`<button class="btn ghost" type="button" id="btnRefazer">Gerar o resumo de novo</button>`:""}
+          <button class="btn ghost" type="button" id="btnExcluir">Excluir</button>
+        </div>
+        <div class="msg" id="edMsg" role="status"></div>
+      </form>
+    </div>`;
+    const conferirCaps = ()=>{
+      const {out, erros} = textoParaCaps($("ed-capitulos").value), m=$("capMsg");
+      const fora = marc ? out.filter(c=>!marc.has(c.s)) : [];
+      const avisos = [...erros];
+      if (fora.length) avisos.push(`Fora do início de uma fala: ${fora.map(c=>fmtTs(c.s)).join(", ")}. O link vai abrir um pouco antes ou depois do assunto.`);
+      if (out.length && out[0].s!==0) avisos.push("O primeiro capítulo deveria começar em 0:00.");
+      m.className = avisos.length ? "msg warn-txt" : "msg ok-txt";
+      m.textContent = avisos.length ? avisos.join(" ") : (out.length ? `${out.length} capítulos${marc?", todos no início de uma fala":""}.` : "");
+      return erros.length===0;
+    };
+    $("ed-capitulos").addEventListener("input", conferirCaps); conferirCaps();
+    const msg = (t,err)=>{ $("edMsg").className="msg"+(err?" err":""); $("edMsg").textContent=t; };
+    async function gravar(status){
+      if (!conferirCaps()) return msg("Corrija o formato dos capítulos antes de salvar.", true);
+      const {dados} = lerFormulario();
+      if (!dados.titulo || !dados.data) return msg("Preencha pelo menos o título e a data.", true);
+      if (!linkOk(dados.link)) return msg("O link precisa começar com https://fathom.video/.", true);
+      msg("Salvando…");
+      try { await api.salvar(id, {...dados, status, tokenFathom: tokenDoLink(dados.link)}); delete S.rascunhos[id];
+        msg(status==="publicado" ? "Publicado. O vídeo já aparece na trilha do time." : "Salvo."); }
+      catch(e){ msg("Não foi possível salvar. Tente de novo.", true); }
+    }
+    $("btnPrevia").addEventListener("click", ()=>{ if(!conferirCaps()) return msg("Corrija o formato dos capítulos antes de pré-visualizar.", true);
+      S.rascunhos[id] = lerFormulario().dados; location.hash = "previa-"+id; });
+    $("btnSalvar").addEventListener("click", ()=>gravar(orig.status==="publicado"?"publicado":(orig.status==="oculto"?"oculto":"rascunho")));
+    $("btnPublicar").addEventListener("click", ()=>gravar("publicado"));
+    if ($("btnOcultar")) $("btnOcultar").addEventListener("click", ()=>gravar("oculto"));
+    if ($("btnRefazer")) confirmar($("btnRefazer"), async ()=>{ delete S.rascunhos[id];
+      await api.salvar(id, {status:"na_fila", linkInformado: orig.linkInformado || orig.link}); location.hash="admin"; });
+    confirmar($("btnExcluir"), async ()=>{ delete S.rascunhos[id]; await api.excluir(id); location.hash="admin"; });
+  }
+
+  // ---------- rotas ----------
+  function route(){
+    const h = location.hash.replace("#","");
+    const shell = $("shell");
+    const adminRota = h==="admin" || h.startsWith("editar-") || h.startsWith("previa-");
+    shell.classList.toggle("wide", adminRota && h!=="" && !h.startsWith("previa-"));
+    if (adminRota && !S.isAdmin) { location.hash = "inicio"; return; }
+    if (h==="admin") { renderAdmin(); renderSteps(""); }
+    else if (h.startsWith("editar-")) { renderEditor(h.slice(7)); renderSteps(""); }
+    else if (h.startsWith("previa-")) { const id=h.slice(7), o=S.docs.find(v=>v.id===id); if(!o){ location.hash="admin"; return; } renderVideo(norm({...o, ...(S.rascunhos[id]||{})}, id), true); renderSteps(""); }
+    else { const v = trilha().find(x=>x.id===h); if (v){ renderVideo(v); renderSteps(v.id); } else { renderWelcome(); renderSteps("inicio"); } }
+  }
+  let ultimaRota = null;
+  window.addEventListener("hashchange", ()=>{ if(!$("app").hidden){ ultimaRota=location.hash; route(); window.scrollTo(0,0); } });
+
+  function aoReceberVideos(lista){
+    S.docs = lista; S.carregado = true;
+    const h = location.hash;
+    // não redesenha o editor enquanto a pessoa digita
+    if (h.startsWith("#editar-") && ultimaRota === h && $("formEd")) return;
+    ultimaRota = h; route();
+  }
+
+  async function entrar(user, email){
+    S.user = user; S.email = (email||"").toLowerCase();
+    $("login").hidden = true; $("app").hidden = false; $("userEmail").textContent = email;
+    if (!DEMO) {
+      try { const c = await S.db.collection("config").doc("acesso").get();
+        const adms = ((c.exists && c.data().admins) || []).map(x=>String(x).toLowerCase());
+        S.isAdmin = adms.includes(S.email); } catch(e){ S.isAdmin = false; }
+    } else S.isAdmin = true;
+    $("lnkAdmin").hidden = !S.isAdmin;
+    S.done = await api.carregarProgresso();
+    route();
+    api.ouvir(aoReceberVideos);
+  }
+  function sairTela(){ $("app").hidden = true; $("login").hidden = false; }
+
+  if (DEMO){
+    $("loginForm").insertAdjacentHTML("afterbegin", `<div class="demo-note">Modo demonstração: o Firebase ainda não foi configurado. Clique em Entrar com qualquer e-mail. Na demonstração você entra como administrador para ver o painel de vídeos.</div>`);
+    $("loginForm").addEventListener("submit", e=>{ e.preventDefault(); entrar({uid:"demo"}, $("email").value || "bia@exemplo.com"); });
+    $("sair").addEventListener("click", sairTela);
+    $("esqueci").addEventListener("click", ()=>{ $("loginMsg").textContent = "No modo demonstração não há senha."; });
+    sairTela();
+    return;
+  }
+
+  const base = "https://www.gstatic.com/firebasejs/10.12.2/";
+  const load = src => new Promise((ok,err)=>{ const s=document.createElement("script"); s.src=src; s.onload=ok; s.onerror=err; document.head.appendChild(s); });
+  load(base+"firebase-app-compat.js").then(()=>Promise.all([load(base+"firebase-auth-compat.js"), load(base+"firebase-firestore-compat.js")])).then(()=>{
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const auth = firebase.auth(); S.db = firebase.firestore(); S.fv = firebase.firestore.FieldValue;
+    const msg = (t,err)=>{ $("loginMsg").textContent=t; $("loginMsg").className="msg"+(err?" err":""); };
+    $("loginForm").addEventListener("submit", e=>{
+      e.preventDefault(); msg("Entrando…");
+      auth.signInWithEmailAndPassword($("email").value.trim(), $("senha").value)
+        .then(()=>msg("")).catch(()=>msg("E-mail ou senha incorretos. Confira e tente de novo.", true));
+    });
+    $("esqueci").addEventListener("click", ()=>{
+      const em = $("email").value.trim();
+      if (!em) return msg("Digite seu e-mail acima e clique de novo.", true);
+      auth.sendPasswordResetEmail(em).then(()=>msg("Enviamos um link para redefinir a senha para "+em+".")).catch(()=>msg("Não foi possível enviar. Confira o e-mail.", true));
+    });
+    $("sair").addEventListener("click", ()=>auth.signOut().then(()=>location.reload()));
+    auth.onAuthStateChanged(u=>{ if(u) entrar(u, u.email); else sairTela(); });
+  }).catch(()=>{ sairTela(); $("loginMsg").textContent="Não foi possível carregar o login. Verifique sua conexão."; });
+})();
+</script>
+
+</body>
+</html>
